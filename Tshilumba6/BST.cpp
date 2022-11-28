@@ -36,7 +36,7 @@ void BST::insert(const TElement val, TNodePtr & tree)
 		tree = new (nothrow) TNode;
 		if(tree == nullptr)
 		{
-			cout << "Memory Full" << endl;
+			cout << "Good" << endl;
 			return;
 		}
 		tree->element = val;
@@ -85,7 +85,7 @@ TNodePtr search(const TElement element, const TNodePtr tree)
     TNodePtr * nodePtr = NULL;
     if(!tree)
     {
-        cout<<"The tree is empty"<<endl;
+        cout<<"Nothing is in the tree"<<endl;
         return(NULL);
     }
     else
@@ -186,7 +186,7 @@ void BST::postView(const TNodePtr root) const
 	{
 		postView(root->left);
 		postView(root->right);
-		cout << root->element << " -> ";
+		cout << root->element << " -> " <<endl;
 	}
 }
 
