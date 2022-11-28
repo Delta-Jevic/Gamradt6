@@ -28,26 +28,30 @@ void BST::insert(TElement element) // wrapper function
 //  This function insert a word received
 //  as a parameter in the tree
 //***************************************
-void insert(const TElement & element, const TNodePtr & tree)
+void BST::insert(const TElement val, TNodePtr & tree)
 {
-    //EMPTY TREE
-    TNodePtr newNode ;
-    newNode = new TNode();
-    newNode = NULL;
+	
+	if (tree == nullptr)
+	{
+		tree = new (nothrow) TNode;
+		if(tree == nullptr)
+		{
+			cout << "Memory Full" << endl;
+			return;
+		}
+		tree->element = val;
+		tree->left = nullptr;
+		tree->right = nullptr;
+		return;
+	}
 
-    newNode->element = element;
-    
-    if(!tree){
-        tree->left = newNode;
-    }
-    else
-    {
-        // go right to left regardelss of your value
-        if(newNode->element < tree->element)
-            insert(newNode->element, tree->left);
-        else
-            insert(newNode->element, tree->right);
-    }
+
+	if (val < tree->element)
+		insert(val,tree->left);
+	else if (val > tree->element)
+		insert(val, tree->right);
+	
+	return;
 }
 
 //******************************************************
@@ -117,16 +121,16 @@ void BST::preView()const // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void preView(TNodePtr tree)
+void BST::preView( const TNodePtr tree)const 
 {
-
     if(tree)
     {
-        cout<<tree->element<<endl;
+        cout<<tree->element<<" -> ";
         preView(tree->left);
         preView(tree->right);
     }
 }
+
 
 
 //********************************
@@ -143,16 +147,20 @@ void BST::inView() const // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void inView(const TNodePtr tree)
+void BST::inView(const TNodePtr tree) const
 {
-
-    if(tree)
+    if(tree == nullptr)
+        return;
+    
+    else
     {
-        inView(tree->left);
-        cout<<tree->element<<endl;
-        inView(tree->right);
+        if(tree != nullptr)
+        {
+            inView(tree->left);
+            cout<<tree->element<<" -> ";
+            inView(tree->right);
+        }
     }
-
 }
 
 
@@ -172,16 +180,14 @@ void BST::postView()const // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void postView(TNodePtr tree)
+void BST::postView(const TNodePtr root) const
 {
-
-    if(tree)
-    {
-        postView(tree->left);
-        postView(tree->right);
-        cout<<tree->element<<endl;
-    }
-    
+	if (root != nullptr)
+	{
+		postView(root->left);
+		postView(root->right);
+		cout << root->element << " -> ";
+	}
 }
 
 
@@ -262,9 +268,6 @@ void BST::removeNode(TNodePtr & tree)
 }
 
 
-
-
-
 //*************************************
 //       Function EmptyTree
 //  deletes all the nodes of the tree
@@ -289,18 +292,19 @@ void BST::findMinNode(TNodePtr & nodePtr, TNodePtr & tmpTree)
 //      Function Destroy
 // deletes the every node one by one
 //***********************************
-void destroy(TNodePtr & nodePtr)
+void BST::destroy(TNodePtr & tPtr)
 {
-    if (nodePtr != NULL)
-    {
-        destroy(nodePtr->left);
-        destroy(nodePtr->right);
-        delete nodePtr;
-    }
+	if (tPtr != nullptr)
+	{
+		destroy(tPtr->left);
+		destroy(tPtr->right);
+		delete tPtr;
+		tPtr = nullptr;
+	}
 }
 
 //***********************************
-//          Destructor
+//          Destructor6
 //  It deletes the whole tree
 //***********************************
 BST::~BST()
