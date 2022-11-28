@@ -1,16 +1,17 @@
-
 #include "BST.h"
 #include <iostream>
 using namespace std;
 
 
-void main()
+int
+main()
 {
 
     TElement letter = "A";
     BST mytree = BST();
     
-    mytree.insert(letter)
+    mytree.insert(letter);
+    mytree.inView();
     
     return 0;
 }

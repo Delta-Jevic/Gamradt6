@@ -1,14 +1,11 @@
-
 #include "BST.h"
 #include <iostream>
-#pragma once
-#include<string>
-#include <iostream>
+#include <string>
 
 using namespace std;
 
 
-BTS::BTS()
+BST::BST()
 {
     root = NULL;
 }
@@ -19,10 +16,10 @@ BTS::BTS()
 //  with the words received and call
 //  insertNode to add it in the tree
 //***********************************
-void BTS::insert(TElement element) // wrapper function
+void BST::insert(TElement element) // wrapper function
 {
     // call recursive functiion
-        insert(root, newNode);
+    insert( element, root);
 }
 
 
@@ -31,26 +28,25 @@ void BTS::insert(TElement element) // wrapper function
 //  This function insert a word received
 //  as a parameter in the tree
 //***************************************
-void BTS::insert(const TElement element, const TNodePtr & tree)
+void insert(const TElement & element, const TNodePtr & tree)
 {
     //EMPTY TREE
-    TreeNode * newNode = NULL;
-    //newNode = new TreeNode;
+    TNodePtr newNode ;
+    newNode = new TNode();
+    newNode = NULL;
 
-    newNode->word = value;
-    newNode->left = NULL ;
-    newNode->right = NULL;
+    newNode->element = element;
     
     if(!tree){
-        nodePtr = newNode;
+        tree->left = newNode;
     }
     else
     {
         // go right to left regardelss of your value
-        if(newNode->word < tree->word)
-            insert(tree->left,newNode);
+        if(newNode->element < tree->element)
+            insert(newNode->element, tree->left);
         else
-            insert(tree->right, newNode);
+            insert(newNode->element, tree->right);
     }
 }
 
@@ -60,14 +56,17 @@ void BTS::insert(const TElement element, const TNodePtr & tree)
 //       of nodes searched to look for it
 //     return the word if find and null if not
 //******************************************************
-TNodePtr BTS::search(TElement element)
+TNodePtr BST::search( const TElement element, const TNodePtr tree)const
 {
-    TNodePtr * nodePtr = NULL;
+    TNodePtr newNode ;
+    newNode = new TNode();
+
+
     //call the recursive function to find node
     // and return it address or nullptr
-    nodePtr = search(item, root);
+    newNode = search(element, root);
 
-    return nodePtr;
+    return newNode;
 }
 
 //***************************************
@@ -76,7 +75,7 @@ TNodePtr BTS::search(TElement element)
 //  if the file exist or not returns NULL
 //  if empty and that node if it is not
 //***************************************
-TNodePtr BTS::search(TElement element, TNodePtr tree)
+TNodePtr search(const TElement element, const TNodePtr tree) 
 {
     //EMPTY TREE
     TNodePtr * nodePtr = NULL;
@@ -89,26 +88,25 @@ TNodePtr BTS::search(TElement element, TNodePtr tree)
         // go right to left, depending on your item
         // until you find a value that equal your item
     {
-        if (element < nodePtr->word)
+        if (element < tree->element)
         {
-            count++;
-            return(search(element, nodePtr->left));
+            return(search(element, tree->left));
          //   i++;
         }
-            else if(element > nodePtr->word)
+            else if(element > tree->element)
             {
-            return(search(element, nodePtr->right));
+            return(search(element, tree->right));
            // i++;
             }
     }
-    return nodePtr;
+    return tree;
 }
 
 //********************************
 // This function display a sorted
 //   listing words of the tree
 //********************************
-void BTS::preView() // wrapper function
+void BST::preView()const // wrapper function
 {
     preView(root);
 }
@@ -119,17 +117,15 @@ void BTS::preView() // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void BTS::preView(TNodePtr tree) const
+void preView(TNodePtr tree)
 {
 
     if(tree)
     {
-        cout<<tree->word<<endl;
+        cout<<tree->element<<endl;
         preView(tree->left);
         preView(tree->right);
     }
-    else
-        return;
 }
 
 
@@ -137,7 +133,7 @@ void BTS::preView(TNodePtr tree) const
 // This function display a sorted
 //   listing words of the tree
 //********************************
-void BTS::inView() // wrapper function
+void BST::inView() const // wrapper function
 {
     inView(root);
 }
@@ -147,17 +143,16 @@ void BTS::inView() // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void BTS::inView(TNodePtr tree) const
+void inView(const TNodePtr tree)
 {
 
     if(tree)
     {
         inView(tree->left);
-        cout<<tree->word<<endl;
+        cout<<tree->element<<endl;
         inView(tree->right);
     }
-    else
-        return;
+
 }
 
 
@@ -166,7 +161,7 @@ void BTS::inView(TNodePtr tree) const
 // This function display a sorted
 //   listing words of the tree
 //********************************
-void BTS::postView() // wrapper function
+void BST::postView()const // wrapper function
 {
     postView(root);
 }
@@ -177,17 +172,16 @@ void BTS::postView() // wrapper function
 //     This function display
 //       the tree in order
 //********************************
-void BTS::postView(TNodePtr tree) const
+void postView(TNodePtr tree)
 {
 
     if(tree)
     {
         postView(tree->left);
         postView(tree->right);
-        cout<<tree->word<<endl;
+        cout<<tree->element<<endl;
     }
-    else
-        return;
+    
 }
 
 
@@ -197,9 +191,9 @@ void BTS::postView(TNodePtr tree) const
 //  removesNode and send the root and
 //  the word received
 //************************************
-void BTS::remove(TElement elemenet) //wrapper function
+void BST::remove( const TElement element) //wrapper function
 {
-    removeNode(element,root);
+    remove(element,root);
 }
 
 //************************************
@@ -208,29 +202,28 @@ void BTS::remove(TElement elemenet) //wrapper function
 //  the tree with the word received as
 //  a parameter
 //************************************
-void BTS::remove(TElement element,TNodePtr & tree)
+void BST::remove( const TElement element,TNodePtr & tree)
 {
 
 
-    if(!nodePtr)
+    if(!tree)
     {
         return;
     }
     // find the word you want to delete
-    else if(element < nodePtr->word)
+    else if(element < tree->element)
     {
         //look left
-        remove(element, nodePtr->left);
+        remove(element, tree->left);
     }
-    else if (element > nodePtr->word)
+    else if (element > tree->element)
     {
         //look right
-        remove(element, nodePtr->right);
+        remove(element, tree->right);
     } // ends here
-
     else
     {
-        removeNode(tree)
+        removeNode(tree);
     }
 }
 
@@ -240,56 +233,63 @@ void BTS::remove(TElement element,TNodePtr & tree)
 //       Function EmptyTree
 //  deletes all the nodes of the tree
 //*************************************
-void BTS::removeNode(TNodePTr & tree)
+void BST::removeNode(TNodePtr & tree)
 {
-    TreeNode * newNode = NULL;
-    if(nodePtr->left != NULL && nodePtr->right != NULL)
+    TNodePtr prevNode ;
+    prevNode = new TNode();
+
+    if(tree->left != NULL && tree->right != NULL)
     {
+        prevNode = tree;
        // nodes with two leaves
-            nodePtr->word = (nodePtr->right)->word; // find the smalest value in the right subtree to our node
-            removeNode(nodePtr->word, nodePtr->right); // delete the node that
+        findMinNode(tree->right, prevNode);
+        tree->element = prevNode->element; // find the smalest value in the right subtree to our node
+        removeNode(tree->right); // delete the node that
+        delete tree;
+    }
+    else if(tree->right == NULL){
+        removeNode(tree->left);
+        delete tree;
+    }
+    else if(tree->left == NULL){
+        removeNode(tree->right);
+        delete tree;
+    }
+    else{
+        delete tree;
+    }
+
+}
+
+
+
+
+
+//*************************************
+//       Function EmptyTree
+//  deletes all the nodes of the tree
+//*************************************
+void BST::findMinNode(TNodePtr & nodePtr, TNodePtr & tmpTree)
+{
+    if(nodePtr->left == NULL)
+    {
+        tmpTree = nodePtr->right;
+        findMinNode( nodePtr->right, tmpTree );
     }
     else
-        {
-            
-            TreeNode * prevNode = nodePtr ;
-            findMinNode(tree, preNode)
-
-        }
+    {
+        findMinNode( nodePtr->left, tmpTree);
+    }
+        
+    
 }
 
-
-
-
-
-//*************************************
-//       Function EmptyTree
-//  deletes all the nodes of the tree
-//*************************************
-void BTS::findMinNode(TNodePtr & nodePtr, TNodePtr & prevNode);
-{
-    if(nodePtr->left != NULL)
-        nodePtr = nodePtr->left;
-    else
-        nodePtr = nodePtr->right;
-    delete prevNode;
-}
-
-
-//*************************************
-//       Function EmptyTree
-//  deletes all the nodes of the tree
-//*************************************
-void BTS::emptyTree()
-{
-    destroy(root);
-}
 
 //***********************************
 //      Function Destroy
 // deletes the every node one by one
 //***********************************
-void BTS::destroy(TreeNode*& nodePtr)
+void destroy(TNodePtr & nodePtr)
 {
     if (nodePtr != NULL)
     {
@@ -303,7 +303,7 @@ void BTS::destroy(TreeNode*& nodePtr)
 //          Destructor
 //  It deletes the whole tree
 //***********************************
-BTS::~BTS()
+BST::~BST()
 {
     //dtor
     destroy(root);
